@@ -239,6 +239,11 @@ export const updateInvoice = async (
   res
 ) => {
   try {
+    console.log(
+      "UPDATE REQUEST BODY:",
+      req.body
+    );
+
     const { id } = req.params;
 
     const existingInvoice =
@@ -291,6 +296,11 @@ export const updateInvoice = async (
       invoice: updatedInvoice,
     });
   } catch (error) {
+    console.error(
+      "UPDATE INVOICE ERROR:",
+      error
+    );
+
     res.status(400).json({
       success: false,
       message: error.message,
