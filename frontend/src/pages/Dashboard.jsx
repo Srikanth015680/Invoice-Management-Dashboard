@@ -110,36 +110,62 @@ const Dashboard = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    try {
-      setSaving(true);
+  try {
+    setSaving(true);
 
-      if (
-        isEditing &&
-        selectedInvoice
-      ) {
-        await updateInvoice(
-          selectedInvoice._id,
-          formData
-        );
-      } else {
-        await createInvoice(
-          formData
-        );
-      }
+    const payload = {
+      customer: formData.customerId,
+      amount: Number(formData.amount),
+      taxRate: Number(formData.taxRate),
+      status: formData.status,
+      issueDate: formData.issueDate,
+      dueDate: formData.dueDate,
+    };
 
-      setIsModalOpen(false);
-      resetForm();
-      refreshInvoices();
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setSaving(false);
+    if (
+      isEditing &&
+      selectedInvoice
+    ) {
+      await updateInvoice(
+        selectedInvoice._id,
+        payload
+      );
+    } else {
+      await createInvoice({
+        customerId:
+          formData.customerId,
+        amount: Number(
+          formData.amount
+        ),
+        taxRate: Number(
+          formData.taxRate
+        ),
+        status: formData.status,
+        issueDate:
+          formData.issueDate,
+        dueDate:
+          formData.dueDate,
+      });
     }
-  };
 
+    setIsModalOpen(false);
+    resetForm();
+    refreshInvoices();
+  } catch (error) {
+    console.error(error);
+
+    alert(
+      error?.response?.data
+        ?.message ||
+        "Failed to save invoice"
+    );
+  } finally {
+    setSaving(false);
+  }
+};
   return (
     <div>
       <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
