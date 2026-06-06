@@ -9,7 +9,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "https://invoice-management-dashboard-ten.vercel.app/",
+    origin: "https://invoice-management-dashboard-ten.vercel.app",
     credentials: true,
   })
 );
